@@ -12,5 +12,5 @@
 
 ## Run de application
 
-    mvn spring-boot:run
+    mvnw spring-boot:run
 
