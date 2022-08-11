@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Generate email</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <h1>Goldeneye</h1>
+    <div th:switch="${userModel != null && noErrors != null && noErrors == true}">
+        <div class="container" th:case="${true}" th:object="${userModel}">
+            <div class="success">
+                <span>Success!</span>
+            </div>
+            <ul>
+                <li>
+                    <span class="list-title">Name:</span>
+                    <span th:text="*{name}"></span>
+                </li>
+                <li>
+                    <span class="list-title">Surname:</span>
+                    <span th:text="*{surname}"></span>
+                </li>
+                <li>
+                    <span class="list-title">Department:</span>
+                    <span th:text="*{getJobPositionObj.department}"></span>
+                </li>
+                <li>
+                    <span class="list-title">Location:</span>
+                    <span th:text="*{getJobPositionObj.location}"></span>
+                </li>
+                <li>
+                    <span class="list-title">Email:</span>
+                    <span th:text="*{email}"></span>
+                </li>
+            </ul>
+            <br>
+            <div class="form-button">
+                <input type="button" onclick="location.href='/'" value="New email" />
+            </div>
+        </div>
+        <div class="container" th:case="${false}">
+            <h3>Generate an employee's e-mail</h3>
+            <form action="#" th:action="@{/}" method="post" th:object="${userModel}">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" th:field="*{name}">
+                    <div class="alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Surname:</label>
+                    <br>
+                    <input type="text" th:field="*{surname}">
+                    <div class="alert-warning" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Job position:</label>
+                    <br>
+                    <select th:field="*{jobPosition}">
+                        <option value="">Select location</option>
+                        <th:block th:each="job : ${jobs}">
+                            <optgroup th:label="${job.key}">
+                                <option th:each="jobData : ${job.value}" th:value="${jobData.id}"
+                                    th:text="${jobData.department}"></option>
+                                </option>
+                        </th:block>
+                    </select>
+                    <div class="alert-warning" th:if="${#fields.hasErrors('jobPosition')}" th:errors="*{jobPosition}">
+                    </div>
+                </div>
+                <br>
+                <div class="form-button">
+                    <input type="submit" value="Send" />
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
